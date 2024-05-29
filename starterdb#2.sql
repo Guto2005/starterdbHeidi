@@ -142,3 +142,57 @@ INSERT INTO ClientesContas (idCliente, idConta)VALUES (5,3);
 INSERT INTO ClientesContas (idCliente, idConta)VALUES (7,3); 
 SELECT * FROM clientescontas
 
+SELECT * FROM contas;
+SELECT * FROM clientes;
+
+
+
+START TRANSACTION
+DELETE FROM clientes WHERE idCliente=14
+
+INSERT INTO tiposconta (nomeTipoConta)
+VALUES ('super conta');
+
+COMMIT 
+ROLLBACK
+
+CREATE VIEW vw_nomeCorrentista_Conta AS 
+SELECT nome,cpf, celular,dataNascimento,numeroConta,saldo,nomeTipoConta 
+FROM clientes
+INNER JOIN 
+clientescontas 
+ON clientes.idCliente = clientescontas.idCliente
+INNER JOIN 
+contas
+ON clientescontas.idConta = contas.idConta
+INNER JOIN 
+tiposconta
+ON contas.idtipoconta=tiposconta.idtipoConta
+
+DROP view vw_nomeCorrentista_conta
+
+SELECT nome,numeroConta,cpf FROM vw_nomeCorrentista_conta
+WHERE nomeTipoConta = 'Corrente'
+ORDER BY nome
+
+CREATE PROCEDURE pi_inserirtiposconta (IN nometipoconta_par VARCHAR(20)
+)
+INSERT INTO tiposconta (nometipoconta)
+VALUES (nomeTipoConta_par);
+
+CALL pi_inserirtiposconta('Super Conta')
+
+SELECT * FROM tiposconta
+
+/* Criar uma procedure que traga quantos emprestimos foram 
+realizados por associado*/
+
+
+ 
+/* Criar uma procedure que traga quantos emprestimos foram 
+realizados por determinado associado por nome*/
+
+
+
+
+

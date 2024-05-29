@@ -115,4 +115,56 @@ VALUES
 ('Morgan','1978-01-02','13988776655','88899902211','Avenida','Interlagos','80','São Paulo','99654428','SP'),
 ('Popó','1968-01-02','13988775566','88899900112','Avenida','Brasil','1080','Rio de janeiro','99654411','RJ');
 
+SELECT * FROM clientes;
+SELECT * FROM clientescontas;
+SELECT * FROM contas;
+SELECT * FROM tiposconta;
 
+/*Trazer o nome dos clientes, o telefone, o número da conta */
+
+SELECT nome, celular, numeroconta,saldo
+FROM clientes
+INNER JOIN clientescontas
+ON clientes.idCliente = clientescontas.idcliente
+INNER JOIN contas
+ON clientescontas.idconta = contas.idconta
+WHERE saldo>500.00
+ORDER BY saldo DESC
+
+/*Trazer o nome do cliente, o número da conta e o tipo da conta */
+
+select nome, numeroconta,nometipoconta
+FROM clientes
+INNER JOIN clientescontas
+ON clientes.idcliente = clientescontas.idcliente
+INNER JOIN contas
+ON clientescontas.idconta = contas.idconta
+INNER JOIN tiposconta
+ON contas.idtipoconta = tiposconta.idtipoconta
+
+/*Trazer o total de contas que temos agrupadas pelo seu tipo */
+
+SELECT nometipoconta, COUNT(idconta) AS 'total contas' FROM contas
+INNER JOIN tiposconta
+ON contas.idtipoconta = tiposconta.idTipoConta
+GROUP BY nometipoconta
+
+/*Trazer todos os tipos de contas e respectivos numeros de contas mesmo que os tipos não possuam nenhuma conta ativa */
+
+SELECT nometipoconta, numeroconta FROM tiposconta
+LEFT JOIN
+contas
+ON contas.idtipoconta = tiposconta.idtipoconta
+
+/* Consulta Paginada */
+SELECT nome, celular FROM clientes LIMIT 2 OFFSET 4
+
+/* 23/05/2024 */
+
+SELECT numeroConta, saldo, nomeTipoConta FROM contas
+INNER JOIN tiposconta
+ON contas.idTipoConta = tiposconta.idTipoConta
+WHERE nometipoconta = 'Corrente'
+ORDER BY saldo DESC
+
+c
